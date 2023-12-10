@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import Slider from 'react-input-slider';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -8,8 +7,10 @@ const AboutUs = () => {
   const [sliderValue, setSliderValue] = useState(0);
   const [animationKey, setAnimationKey] = useState(0);
 
-  const handleSliderChange = ({ x }) => {
+  const handleSliderChange = (event) => {
+    const x = parseInt(event.target.value, 10);
     setSliderValue(x);
+
     if (x >= 50 && !showAlternateContent) {
       setShowAlternateContent(true);
       setAnimationKey((prevKey) => prevKey + 1);
@@ -18,10 +19,24 @@ const AboutUs = () => {
       setAnimationKey((prevKey) => prevKey + 1);
     }
   };
-  
+
   const [ref, inView] = useInView({
     triggerOnce: true,
   });
+
+  useEffect(() => {
+    const slider = document.getElementById('custom-slider');
+
+    const updateSliderValue = () => {
+      setSliderValue(parseInt(slider.value, 10));
+    };
+
+    slider.addEventListener('input', updateSliderValue);
+
+    return () => {
+      slider.removeEventListener('input', updateSliderValue);
+    };
+  }, []);
 
   return (
     <div className="px-3 py-[7rem] items-center" id="about">
@@ -30,32 +45,14 @@ const AboutUs = () => {
       <div className="md:ml-8 mb-4 md:mb-0 text-xs md:text-base inline-block">
         <div className="flex flex-row py-3 px-6 gap-6 items-center bg-white shadow-lg rounded-full hover:scale-105 transition-all">
           <p>Our Story</p>
-          <Slider
-            axis="x"
-            x={sliderValue}
+          <input
+            type="range"
+            id="custom-slider"
+            value={sliderValue}
             onChange={handleSliderChange}
-            styles={{
-              track: {
-                backgroundColor: 'lightgray',
-                height: '10px',
-              },
-              active: {
-                backgroundColor: 'red',
-                height: '10px',
-              },
-              thumb: {
-                marginTop: '-6px',
-                width: '30px',
-                height: '30px',
-                borderRadius: '50%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'transparent',
-                backgroundImage: `url(/img/pizza.png)`,
-                backgroundSize: 'cover',
-              },
-            }}
+            min="0"
+            max="100"
+            step="1"
           />
           <p>Our History</p>
         </div>

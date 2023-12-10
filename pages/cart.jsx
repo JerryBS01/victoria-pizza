@@ -64,39 +64,39 @@ const Cart = () => {
     });
   };
 
-  const handleStripePayment = async () => {
-    if (!stripe || !elements) {
-      return;
-    }
+  // const handleStripePayment = async () => {
+  //   if (!stripe || !elements) {
+  //     return;
+  //   }
 
-    try {
-      const { paymentMethod, error } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: elements.getElement(CardElement),
-      });
+  //   try {
+  //     const { paymentMethod, error } = await stripe.createPaymentMethod({
+  //       type: 'card',
+  //       card: elements.getElement(CardElement),
+  //     });
 
-      if (error) {
-        console.error(error);
-      } else {
-        const orderItems = cart.products.map((product) => ({
-          item: product.title,
-          quantity: product.quantity,
-          extraOptions: product.extraOptions.map((option) => option.text),
-        }));
+  //     if (error) {
+  //       console.error(error);
+  //     } else {
+  //       const orderItems = cart.products.map((product) => ({
+  //         item: product.title,
+  //         quantity: product.quantity,
+  //         extraOptions: product.extraOptions.map((option) => option.text),
+  //       }));
 
-        createOrder({
-          customer,
-          orderDetails: orderItems,
-          address,
-          total: cart.total,
-          method: 1,
-          paymentMethodId: paymentMethod.id,
-        });
-      }
-    } catch (err) {
-      console.error("Error processing payment:", err);
-    }
-  };
+  //       createOrder({
+  //         customer,
+  //         orderDetails: orderItems,
+  //         address,
+  //         total: cart.total,
+  //         method: 1,
+  //         paymentMethodId: paymentMethod.id,
+  //       });
+  //     }
+  //   } catch (err) {
+  //     console.error("Error processing payment:", err);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col">
@@ -239,7 +239,7 @@ const Cart = () => {
               >
                 Cash on Delivery
               </button>
-              <button
+              {/* <button
                 className={`px-5 py-3 rounded-sm mb-5 ${isPaymentDisabled ? 'cursor-not-allowed bg-gray-300 text-white' : 'cursor-pointer bg-white text-red-500 hover:bg-gray-300 hover:scale-105'} font-semibold relative`}
                 onClick={handleStripePayment}
                 disabled={isPaymentDisabled}
@@ -250,7 +250,7 @@ const Cart = () => {
                 <div className="mt-2">
                   Pay with Stripe
                 </div>
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
