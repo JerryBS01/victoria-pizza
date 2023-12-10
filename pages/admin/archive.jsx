@@ -26,7 +26,7 @@ const OrdersArchiveModal = ({ orders, closeArchive }) => {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
+              {orders && orders.map((order) => (
                 <React.Fragment key={order._id}>
                   <tr>
                     <td colSpan="7" className="p-0">
