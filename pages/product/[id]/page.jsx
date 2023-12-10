@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { addProduct } from '../../redux/cartSlice';
+import { addProduct } from '../../../redux/cartSlice';
 import { GiFullPizza } from "react-icons/gi";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 const Product = ({ pizza }) => {
     const [size, setSize] = useState(0);
