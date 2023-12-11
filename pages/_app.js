@@ -1,7 +1,7 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Provider } from 'react-redux';
-import Layout from '../components/layout';
+import Layout from '../components/Layout';
 import store from '../redux/store';
 import '../styles/globals.css';
 

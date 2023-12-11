@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Featured from '../components/featured';
-import PizzaList from '../components/pizzaList';
-import AddButton from '../components/addButton';
-import Add from '../components/add';
-import About from '../components/about';
+import Featured from '../components/Featured';
+import PizzaList from '../components/PizzaList';
+import AddButton from '../components/AddButton';
+import Add from '../components/Add';
+import About from '../components/About';
 import axios from 'axios';
 
 export default function Home({ pizzaList, admin }) {
