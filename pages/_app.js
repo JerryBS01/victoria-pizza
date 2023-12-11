@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import store from '../redux/store';
 import '../styles/globals.css';
 
+// Replace with your actual public key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 function MyApp({ Component, pageProps }) {

@@ -6,9 +6,9 @@ import { useRouter } from "next/router";
 import { deleteProduct, reset } from "../redux/cartSlice";
 import { FaTrash } from "react-icons/fa";
 import dynamic from "next/dynamic";
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import LoadingScreen from "../components/LoadingScreen";
 import { motion } from "framer-motion";
+import { loadStripe } from '@stripe/stripe-js';
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
@@ -17,8 +17,6 @@ const Cart = () => {
   const [address, setAddress] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
-  const stripe = useStripe();
-  const elements = useElements();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -38,15 +36,13 @@ const Cart = () => {
         localStorage.setItem('orderId', res.data._id);
 
         dispatch(reset());
-        router.push(`/orders/${res.data._id}`);
       }
     } catch (err) {
-      console.log(err.response.status); // Log the response status code
-      console.log(err.response.data);   // Log any additional error data
+      console.log(err);
     }
   };
 
-  const handleCashPayment = () => {
+  const handleCashPayment = async () => {
     const orderItems = cart.products.map(product => {
       return {
         item: product.title,
@@ -55,48 +51,59 @@ const Cart = () => {
       };
     });
 
-    createOrder({
+    await createOrder({
       customer,
       orderDetails: orderItems,
       address,
       total: cart.total,
       method: 0,
     });
+
+    const orderId = localStorage.getItem('orderId');
+    router.push(`/orders/${orderId}`);
   };
 
-  // const handleStripePayment = async () => {
-  //   if (!stripe || !elements) {
-  //     return;
-  //   }
+  const handleStripePayment = async () => {
 
-  //   try {
-  //     const { paymentMethod, error } = await stripe.createPaymentMethod({
-  //       type: 'card',
-  //       card: elements.getElement(CardElement),
-  //     });
+    const orderItems = cart.products.map(product => {
+      return {
+        item: product.title,
+        quantity: product.quantity,
+        extraOptions: product.extraOptions.map(option => option.text),
+      };
+    });
 
-  //     if (error) {
-  //       console.error(error);
-  //     } else {
-  //       const orderItems = cart.products.map((product) => ({
-  //         item: product.title,
-  //         quantity: product.quantity,
-  //         extraOptions: product.extraOptions.map((option) => option.text),
-  //       }));
+    await createOrder({
+      customer,
+      orderDetails: orderItems,
+      address,
+      total: cart.total,
+      method: 1,
+    });
 
-  //       createOrder({
-  //         customer,
-  //         orderDetails: orderItems,
-  //         address,
-  //         total: cart.total,
-  //         method: 1,
-  //         paymentMethodId: paymentMethod.id,
-  //       });
-  //     }
-  //   } catch (err) {
-  //     console.error("Error processing payment:", err);
-  //   }
-  // };
+    const orderId = localStorage.getItem('orderId');
+
+    try {
+      const response = await axios.post('/api/checkout', {
+        cartTotal: cart.total,
+        orderId: orderId
+      });
+  
+      const sessionId = response.data.id;
+  
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+  
+      const { error } = await stripe.redirectToCheckout({
+        sessionId,
+      });
+  
+      if (error) {
+        console.error('Error redirecting to Stripe Checkout:', error);
+      }
+    } catch (error) {
+      console.error('Error handling Stripe payment:', error);
+    }
+  };
 
   return (
     <div className="flex flex-col">
@@ -239,18 +246,13 @@ const Cart = () => {
               >
                 Cash on Delivery
               </button>
-              {/* <button
+              <button
                 className={`px-5 py-3 rounded-sm mb-5 ${isPaymentDisabled ? 'cursor-not-allowed bg-gray-300 text-white' : 'cursor-pointer bg-white text-red-500 hover:bg-gray-300 hover:scale-105'} font-semibold relative`}
                 onClick={handleStripePayment}
                 disabled={isPaymentDisabled}
               >
-                <div className="border-b border-gray-500">
-                  <CardElement />
-                </div>
-                <div className="mt-2">
-                  Pay with Stripe
-                </div>
-              </button> */}
+                Pay with Stripe
+              </button>
             </div>
           </div>
         </div>
