@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
 import Head from 'next/head';
-import Featured from '../components/Featured';
-import PizzaList from '../components/PizzaList';
-import AddButton from '../components/AddButton';
-import Add from '../components/Add';
-import About from '../components/About';
+import Featured from '../components/featured';
+import PizzaList from '../components/pizzaList';
+import AddButton from '../components/addButton';
+import Add from '../components/add';
+import About from '../components/about';
 import axios from 'axios';
 
 export default function Home({ pizzaList, admin }) {
@@ -27,7 +26,7 @@ export default function Home({ pizzaList, admin }) {
     <div>
       <Head>
         <title>Pizza Restaurant</title>
-        <meta name="description" content="Best Pizza Shop in Town" />
+        <meta name="description" content="Best Pizza Restaurant in Town" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

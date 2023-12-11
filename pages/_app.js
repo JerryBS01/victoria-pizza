@@ -1,11 +1,10 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Provider } from 'react-redux';
-import Layout from '../components/Layout';
+import Layout from '../components/layout';
 import store from '../redux/store';
 import '../styles/globals.css';
 
-// Replace with your actual public key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 function MyApp({ Component, pageProps }) {

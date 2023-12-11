@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
-import Add from '../../components/Add';
-import AddButton from '../../components/AddButton';
+import Add from '../../components/add';
+import AddButton from '../../components/addButton';
 import { format } from 'date-fns';
 import OrdersArchiveModal from './archive';
 
