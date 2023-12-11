@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IoClose } from "react-icons/io5";
-import LoadingSpinner from './loadingSpinner';
+import LoadingSpinner from './LoadingSpinner';
 
 const Add = ({ setClose, editData, setEditData }) => {
     const [file, setFile] = useState(null);

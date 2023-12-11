@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import PizzaCard from './pizzaCard';
-import LoadingScreen from './loadingScreen';
+import PizzaCard from './PizzaCard';
+import LoadingScreen from './LoadingScreen';
 
 const PizzaList = ({ pizzaList }) => {
   const [isLoading, setIsLoading] = useState(false);
